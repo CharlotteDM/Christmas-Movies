@@ -6,16 +6,21 @@ library(ggrepel)
 library(fontawesome)
 library(showtext)
 
+
+
 path <- dirname(rstudioapi::getActiveDocumentContext()$path)
 print(path)
 
 setwd(path)
 
-
+#data from: https://www.kaggle.com/datasets/jonbown/christmas-movies"
 movies <- read.csv("christmas_movies.csv", stringsAsFactors = FALSE)
 
 #top 10 films
 top10_movies <- movies[order(-movies$imdb_rating), ][1:10, ]
+top10_movies <- movies[movies$type == "Movie", ][order(-movies$imdb_rating), ][1:10, ]
+top10_movies <- movies[movies$type == "Movie" & !is.na(movies$imdb_rating), ]
+top10_movies <- top10_movies[order(-top10_movies$imdb_rating), ][1:10, ]
 
 
 #plot - top 10 Christmas Films
@@ -41,4 +46,3 @@ ggplot(top10_movies, aes(x = reorder(title, imdb_rating), y = imdb_rating)) +
   geom_text(aes(label = round(imdb_rating, 1)), hjust = -0.3, color = "#8B0000", size = 5)  
 
 
-https://www.kaggle.com/datasets/jonbown/christmas-movies
